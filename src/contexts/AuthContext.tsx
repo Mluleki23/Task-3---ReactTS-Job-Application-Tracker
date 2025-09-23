@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import type { User } from "../types";
 
-
 // Context type
 interface AuthCtx {
   user: User | null;
@@ -41,11 +40,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(() => {
     const raw = localStorage.getItem("jobtracker_user");
-    return raw ? JSON.parse(raw) : null;
+    const parsed = raw ? JSON.parse(raw) : null;
+    console.log("[AuthProvider] Initial user from localStorage:", parsed);
+    return parsed;
   });
 
   // Sync with localStorage
   useEffect(() => {
+    console.log("[AuthProvider] user changed:", user);
     if (user) localStorage.setItem("jobtracker_user", JSON.stringify(user));
     else localStorage.removeItem("jobtracker_user");
   }, [user]);

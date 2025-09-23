@@ -1,0 +1,174 @@
+/* General Layout */
+body {
+  font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+  background: linear-gradient(120deg, #f0f4f8 0%, #e0e7ef 100%);
+  margin: 0;
+  min-height: 100vh;
+  color: #222;
+}
+
+main,
+.main-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+  color: #1a365d;
+}
+
+/* Buttons */
+button,
+.btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+button:hover,
+.btn:hover {
+  background: #1e40af;
+}
+
+/* Forms */
+input,
+select,
+textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 0.2rem;
+  margin-bottom: 0.8rem;
+  background: #fff;
+  transition: border 0.2s;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+label {
+  font-size: 0.98rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* Cards */
+.card,
+.job-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(30, 64, 175, 0.07);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.2rem;
+  transition: box-shadow 0.2s;
+}
+.card:hover,
+.job-card:hover {
+  box-shadow: 0 4px 24px rgba(30, 64, 175, 0.13);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-right: 0.5em;
+}
+.status-applied {
+  background: #fef08a;
+  color: #92400e;
+}
+.status-interviewed {
+  background: #bbf7d0;
+  color: #166534;
+}
+.status-rejected {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  main,
+  .main-content {
+    padding: 1rem 0.3rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  .card,
+  .job-card {
+    padding: 0.8rem 0.7rem;
+  }
+}
+
+/* Utility */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.text-center {
+  text-align: center;
+}
+.text-gray-500 {
+  color: #64748b;
+}
+.font-bold {
+  font-weight: bold;
+}
+.rounded {
+  border-radius: 8px;
+}
+.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}

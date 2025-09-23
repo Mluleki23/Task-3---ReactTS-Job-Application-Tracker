@@ -1,12 +1,13 @@
-// src/components/JobForm.tsx
 import React, { useState } from "react";
-import type{ Job, JobStatus } from "../types";
+import type { Job, JobStatus } from "../types";
+
+export type JobFormInput = Omit<Job, "userId">;
 
 export default function JobForm({
   onSubmit,
   initial,
 }: {
-  onSubmit: (j: Job) => void;
+  onSubmit: (job: JobFormInput) => void;
   initial?: Partial<Job>;
 }) {
   const [company, setCompany] = useState(initial?.company || "");
@@ -28,10 +29,17 @@ export default function JobForm({
       status,
       dateApplied,
       details,
-      userId: initial?.userId || 1,
-      createdAt: new Date().toISOString(),
+      createdAt: initial?.createdAt || new Date().toISOString(),
       id: initial?.id || Date.now(),
     });
+    // Reset form after adding new job
+    if (!initial) {
+      setCompany("");
+      setRole("");
+      setStatus("Applied");
+      setDateApplied(new Date().toISOString().slice(0, 10));
+      setDetails("");
+    }
   };
 
   return (
@@ -84,9 +92,14 @@ export default function JobForm({
         />
       </div>
       <div>
-        <button className="px-4 py-2 rounded bg-sky-600 text-white">
-          Save
-        </button>
+        <div>
+          <button
+            type="submit" // let the <form onSubmit={submit}> fire
+            className="px-4 py-2 rounded bg-sky-600 text-white"
+          >
+            {initial ? "Update" : "Save"}
+          </button>
+        </div>
       </div>
     </form>
   );
