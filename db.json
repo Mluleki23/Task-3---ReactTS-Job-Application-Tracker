@@ -14,6 +14,26 @@
       "id": "ba20",
       "username": "Sizwe",
       "password": "789456"
+    },
+    {
+      "id": "0c3f",
+      "username": "de",
+      "password": "456123"
+    },
+    {
+      "id": "5112",
+      "username": "se",
+      "password": "741852"
+    },
+    {
+      "id": "e2d7",
+      "username": "hi",
+      "password": "852963"
+    },
+    {
+      "id": "2f26",
+      "username": "Fi",
+      "password": "456123"
     }
   ],
   "jobs": [
@@ -46,6 +66,36 @@
       "details": "8yuo",
       "createdAt": "2025-09-25T07:02:57.722Z",
       "userId": "ba20"
+    },
+    {
+      "id": 1758785913352,
+      "company": "drgxhfx",
+      "role": "hfg",
+      "status": "Rejected",
+      "dateApplied": "2025-09-25",
+      "details": "thrtr",
+      "createdAt": "2025-09-25T07:38:33.352Z",
+      "userId": "0c3f"
+    },
+    {
+      "id": 1758788892277,
+      "company": "drgrxrg",
+      "role": "dgxdr",
+      "status": "Applied",
+      "dateApplied": "2025-09-25",
+      "details": "gfdxxfd",
+      "createdAt": "2025-09-25T08:28:12.277Z",
+      "userId": "5112"
+    },
+    {
+      "id": 1758792459035,
+      "company": "gchjg",
+      "role": "fgxh",
+      "status": "Interviewed",
+      "dateApplied": "2025-09-25",
+      "details": "fghd",
+      "createdAt": "2025-09-25T09:27:39.035Z",
+      "userId": "2f26"
     }
   ]
 }

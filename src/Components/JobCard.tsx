@@ -1,30 +1,54 @@
-import React from "react";
+// ...existing code...
+import { useNavigate } from "react-router-dom";
 import type { Job } from "../types";
 
 const statusColor = (s: string) =>
-  s === "Rejected" ? "bg-red-200 text-red-800" :
-  s === "Applied" ? "bg-yellow-200 text-yellow-800" : "bg-green-200 text-green-800";
+  s === "Rejected"
+    ? "bg-red-200 text-red-800"
+    : s === "Applied"
+    ? "bg-yellow-200 text-yellow-800"
+    : "bg-green-200 text-green-800";
 
-export default function JobCard({
-  job,
-  onDelete,
-  onEdit
-}: {
+type JobCardProps = {
   job: Job;
   onDelete: (id: number) => void;
   onEdit: (job: Job) => void;
-}) {
+};
+
+export default function JobCard({ job, onDelete, onEdit }: JobCardProps) {
+  const navigate = useNavigate();
   return (
     <div className="p-4 rounded shadow-sm bg-white flex flex-col sm:flex-row sm:justify-between">
       <div>
-        <h3 className="text-lg font-semibold">{job.company} — {job.role}</h3>
+        <h3 className="text-lg font-semibold">
+          {job.company} — {job.role}
+        </h3>
         <p className="text-sm">Applied: {job.dateApplied}</p>
         <p className="text-sm">{job.details}</p>
       </div>
       <div className="flex items-center gap-2 mt-4 sm:mt-0">
-        <span className={`px-2 py-1 rounded ${statusColor(job.status)}`}>{job.status}</span>
-        <button onClick={() => onEdit(job)} className="px-2 py-1 rounded border">Edit</button>
-        <button onClick={() => onDelete(job.id)} className="px-2 py-1 rounded border">Delete</button>
+        <span className={`px-2 py-1 rounded ${statusColor(job.status)}`}>
+          {job.status}
+        </span>
+        <button
+          onClick={() => onEdit(job)}
+          className="px-2 py-1 rounded border"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => onDelete(job.id)}
+          className="px-2 py-1 rounded border"
+          style={{ background: "#ef4444", color: "#fff", border: "none" }}
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => navigate(`/jobs/${job.id}`)}
+          className="px-2 py-1 rounded border bg-blue-500 text-white"
+        >
+          View Details
+        </button>
       </div>
     </div>
   );

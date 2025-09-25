@@ -99,49 +99,31 @@ export default function Home() {
   };
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Jobs You Applied For</h1>
-      <div className="flex flex-col sm:flex-row gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Search by company or role"
-          value={search}
-          onChange={handleSearch}
-          className="border p-2 rounded w-full sm:w-1/3"
-        />
-        <select
-          value={status}
-          onChange={handleStatus}
-          className="border p-2 rounded"
+    <main className="main-content text-center flex flex-col items-center justify-center p-6 min-h-[60vh]">
+      <h1 className="text-4xl font-bold mb-4" style={{ color: "#2563eb" }}>
+        Welcome to JobTracker
+      </h1>
+      <p className="text-lg text-gray-500 mb-6 max-w-xl">
+        Effortlessly track your job applications, manage your opportunities, and
+        stay organized on your career journey.
+        <br />
+        <span className="font-semibold">Built with React & TypeScript.</span>
+      </p>
+      <div className="flex gap-4 justify-center mb-8">
+        <button
+          className="btn"
+          style={{ background: "#22c55e", fontWeight: 600, fontSize: "1.1rem" }}
         >
-          <option value="">All Statuses</option>
-          <option value="Applied">Applied</option>
-          <option value="Interviewed">Interviewed</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <select
-          value={sort}
-          onChange={handleSort}
-          className="border p-2 rounded"
+          Get Started
+        </button>
+        <button
+          className="btn"
+          style={{ background: "#2563eb", fontWeight: 600, fontSize: "1.1rem" }}
         >
-          <option value="desc">Newest</option>
-          <option value="asc">Oldest</option>
-        </select>
+          Login
+        </button>
       </div>
-      <JobForm onSubmit={handleAddOrUpdate} initial={editingJob || undefined} />
-      <div className="mt-6 space-y-4">
-        {filtered.length === 0 && (
-          <div className="text-gray-500">No jobs found.</div>
-        )}
-        {filtered.map((job) => (
-          <JobCard
-            key={job.id}
-            job={job}
-            onDelete={handleDelete}
-            onEdit={setEditingJob}
-          />
-        ))}
-      </div>
+      {/* Copyright removed, now only in footer */}
     </main>
   );
 }

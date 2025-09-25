@@ -43,30 +43,44 @@ export default function JobForm({
   };
 
   return (
-    <form onSubmit={submit} className="space-y-2 p-4 bg-white rounded shadow">
+    <form
+      onSubmit={submit}
+      className="space-y-5 p-6 bg-white rounded-xl shadow-lg max-w-md mx-auto border border-sky-100"
+    >
+      <h2 className="text-xl font-bold text-sky-700 mb-2 text-center">
+        {initial ? "Edit Job" : "Add New Job"}
+      </h2>
       <div>
-        <label className="block text-sm">Company</label>
+        <label className="block text-sm font-medium text-sky-700 mb-1">
+          Company
+        </label>
         <input
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="w-full border border-sky-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
+          placeholder="e.g. Google"
         />
       </div>
       <div>
-        <label className="block text-sm">Role</label>
+        <label className="block text-sm font-medium text-sky-700 mb-1">
+          Role
+        </label>
         <input
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="w-full border border-sky-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
+          placeholder="e.g. Frontend Developer"
         />
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm">Status</label>
+          <label className="block text-sm font-medium text-sky-700 mb-1">
+            Status
+          </label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as JobStatus)}
-            className="w-full border p-2 rounded"
+            className="w-full border border-sky-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
           >
             <option>Applied</option>
             <option>Interviewed</option>
@@ -74,32 +88,36 @@ export default function JobForm({
           </select>
         </div>
         <div>
-          <label className="block text-sm">Date Applied</label>
+          <label className="block text-sm font-medium text-sky-700 mb-1">
+            Date Applied
+          </label>
           <input
             type="date"
             value={dateApplied}
             onChange={(e) => setDateApplied(e.target.value)}
-            className="w-full border p-2 rounded"
+            className="w-full border border-sky-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
           />
         </div>
       </div>
       <div>
-        <label className="block text-sm">Details</label>
+        <label className="block text-sm font-medium text-sky-700 mb-1">
+          Details
+        </label>
         <textarea
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          className="w-full border p-2 rounded"
+          className="w-full border border-sky-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-sky-400 transition min-h-[60px]"
+          placeholder="Notes, interview feedback, etc."
         />
       </div>
-      <div>
-        <div>
-          <button
-            type="submit" // let the <form onSubmit={submit}> fire
-            className="px-4 py-2 rounded bg-sky-600 text-white"
-          >
-            {initial ? "Update" : "Save"}
-          </button>
-        </div>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="px-6 py-2 rounded-lg font-semibold shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-400"
+          style={{ background: initial ? "#2563eb" : "#22c55e", color: "#fff" }}
+        >
+          {initial ? "Update" : "Save"}
+        </button>
       </div>
     </form>
   );
