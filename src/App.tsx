@@ -20,12 +20,9 @@ export default function App() {
           {/* Public pages */}
           <Route path="/Register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-        
 
           {/* Protected pages */}
-          <Route path="/home" element={ <Home />}
-             
-          />
+          <Route path="/home" element={<Home />} />
           <Route
             path="/jobs/:id"
             element={

@@ -57,11 +57,17 @@ export default function Home() {
       alert("Job updated!");
     } else {
       try {
-        const saved = await createJob({ ...job, userId: user.id });
+        const jobToSave = { ...job, userId: user.id };
+        console.log("[DEBUG] Saving job:", jobToSave);
+        const saved = await createJob(jobToSave);
         setJobs((jobs) => [...jobs, saved]);
         alert("Job saved!");
-      } catch {
-        alert("Failed to save job");
+      } catch (err) {
+        console.error("[ERROR] Failed to save job", err);
+        alert(
+          "Failed to save job: " +
+            (err instanceof Error ? err.message : String(err))
+        );
       }
     }
   };

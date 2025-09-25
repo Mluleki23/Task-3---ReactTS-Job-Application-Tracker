@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -15,7 +14,7 @@ export default function Login() {
 
     const success = await login(username, password);
     if (success) {
-      nav("/home"); // redirect to Home
+      nav("/home");
     } else {
       alert("Invalid username or password");
     }
@@ -42,16 +41,12 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
-        <Link to="/home">
-          {" "}
-          <button
-            type="submit"
-            className="px-4 py-2 bg-sky-600 text-white rounded"
-          >
-            Login
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-sky-600 text-white rounded"
+        >
+          Login
+        </button>
       </form>
     </main>
   );

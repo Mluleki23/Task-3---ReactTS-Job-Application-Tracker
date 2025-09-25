@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import type { User } from "../types";
-import { Link } from "react-router-dom";
 
 export default function Register() {
   const { login } = useContext(AuthContext);
@@ -16,7 +15,6 @@ export default function Register() {
     if (!username || !password) return alert("Enter username and password");
 
     try {
-      // Check if username already exists
       const existing = await axios.get<User[]>(
         `http://localhost:5000/users?username=${username}`
       );
@@ -24,20 +22,30 @@ export default function Register() {
         return alert("Username already exists");
       }
 
-      // Create new user
-      const res = await axios.post<User>("http://localhost:5000/users", {
+      await axios.post<User>("http://localhost:5000/users", {
         username,
         password,
       });
 
-      // Auto-login the user
-      await login(username, password);
-
-      // Redirect to home
+      // After successful registration, redirect to login page
+      alert("Registration successful! Please log in.");
       nav("/login");
     } catch (err) {
-      console.error(err);
-      alert("Registration failed");
+      console.error("Registration request failed:", err);
+      const error = err as any;
+      if (error && error.response) {
+        alert(
+          `Registration failed: ${error.response.status} ${error.response.statusText}`
+        );
+      } else if (error && error.request) {
+        alert(
+          "Registration failed: No response from server. Is JSON Server running?"
+        );
+      } else if (error && error.message) {
+        alert("Registration failed: " + error.message);
+      } else {
+        alert("Registration failed: Unknown error");
+      }
     }
   };
 
@@ -62,15 +70,12 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Link to="/login">
-          {" "}
-          <button
-            type="submit"
-            className="px-4 py-2 bg-sky-600 text-white rounded"
-          >
-            Register
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-sky-600 text-white rounded"
+        >
+          Register
+        </button>
       </form>
     </main>
   );
