@@ -14,7 +14,7 @@ export default function Login() {
 
     const success = await login(username, password);
     if (success) {
-      nav("/home");
+      nav("/jobs");
     } else {
       alert("Invalid username or password");
     }

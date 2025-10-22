@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import JobForm from "../components/JobForm";
 import type { JobFormInput } from "../components/JobForm";
-import JobCard from "../components/JobCard";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchJobs, createJob } from "../api";
 import type { Job } from "../types";
@@ -56,26 +55,83 @@ const JobPage = () => {
     alert("Job deleted!");
   };
 
+  const getStatusColor = (status: string) => {
+    if (status === "Interviewed") return "green";
+    if (status === "Rejected") return "red";
+    if (status === "Applied") return "blue";
+    return "gray";
+  };
+
   return (
-    <div className="main-content w-full max-w-xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Apply for a Job</h2>
-      <JobForm onSubmit={handleAddOrUpdate} initial={editingJob || undefined} />
-      <h3 className="text-xl font-semibold mt-8">Jobs You Have Applied For</h3>
-      <div className="mt-2 space-y-4">
-        {jobs.length === 0 && (
-          <div className="text-gray-500">No jobs found.</div>
-        )}
-        {jobs.map((job) => (
-          <JobCard
-            key={job.id}
-            job={job}
-            onDelete={handleDelete}
-            onEdit={setEditingJob}
-          />
-        ))}
+    <div className="main-content w-full max-w-5xl mx-auto mt-8 mb-16 pb-8 px-4">
+      <h1 className="text-4xl font-bold mb-8 text-center">Job Application Tracker</h1>
+      
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">{editingJob ? "Edit Job" : "Add Job"}</h2>
+        <JobForm 
+          onSubmit={handleAddOrUpdate} 
+          initial={editingJob || undefined}
+          onCancel={() => setEditingJob(null)}
+        />
       </div>
 
-      {/* Modal removed: now handled by JobDetails page */}
+      <div className="mt-8 overflow-x-auto">
+        <table className="w-full border-collapse border border-gray-300 bg-white">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Company</th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Role</th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Status</th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Date applied</th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jobs.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="border border-gray-300 px-4 py-8 text-center text-gray-500">
+                  No jobs found.
+                </td>
+              </tr>
+            ) : (
+              jobs.map((job) => (
+                <tr key={job.id} className="hover:bg-gray-50">
+                  <td className="border border-gray-300 px-4 py-3">{job.company}</td>
+                  <td className="border border-gray-300 px-4 py-3">{job.role}</td>
+                  <td className="border border-gray-300 px-4 py-3">
+                    <span style={{ color: getStatusColor(job.status), fontWeight: "600" }}>
+                      {job.status}
+                    </span>
+                  </td>
+                  <td className="border border-gray-300 px-4 py-3">{job.dateApplied}</td>
+                  <td className="border border-gray-300 px-4 py-3">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditingJob(job)}
+                        className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(job.id)}
+                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => window.location.href = `/jobs/${job.id}`}
+                        className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -1,17 +1,17 @@
 // ...existing code...
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import { JobPage } from "./pages/JobPage";
-import JobDetails from "./pages/JobDetails";
-import Landing from "./pages/Landing";
-import NotFound from "./pages/NotFound";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import Home from "./Pages/Home";
+import { JobPage } from "./Pages/JobPage";
+import JobDetails from "./Pages/JobDetails";
+import Landing from "./Pages/Landing";
+import NotFound from "./Pages/NotFound";
+import { ProtectedRoute } from "./Components/ProtectedRoute";
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 
 export default function App() {
   return (
@@ -25,6 +25,7 @@ export default function App() {
             minHeight: "90vh",
             display: "flex",
             flexDirection: "column",
+            paddingBottom: "60px",
           }}
         >
           <Routes>

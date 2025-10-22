@@ -39,6 +39,11 @@
       "id": "78d0",
       "username": "mlu@gmail.com",
       "password": "1234"
+    },
+    {
+      "id": "dd2a",
+      "username": "Sne@gmail.com",
+      "password": "1452"
     }
   ],
   "jobs": [
@@ -101,6 +106,26 @@
       "details": "fghd",
       "createdAt": "2025-09-25T09:27:39.035Z",
       "userId": "2f26"
+    },
+    {
+      "id": 1761128881145,
+      "company": "trtdryd",
+      "role": "tdyhtyh",
+      "status": "Interviewed",
+      "dateApplied": "2025-10-22",
+      "details": "tyu",
+      "createdAt": "2025-10-22T10:28:01.145Z",
+      "userId": "dd2a"
+    },
+    {
+      "id": 1761130717166,
+      "company": " ",
+      "role": "rtshtr",
+      "status": "Applied",
+      "dateApplied": "2025-10-22",
+      "details": "",
+      "createdAt": "2025-10-22T10:58:37.166Z",
+      "userId": "dd2a"
     }
   ]
 }
