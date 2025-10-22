@@ -33,6 +33,7 @@ export default function Navbar() {
               boxShadow: "none",
               letterSpacing: "0.04em",
               margin: "0 1.5rem",
+              textDecoration: "none",
             }}
           >
             JobTracker
@@ -44,6 +45,7 @@ export default function Navbar() {
               background: "transparent",
               color: "#fff",
               boxShadow: "none",
+              textDecoration: "none",
             }}
           >
             Jobs
@@ -56,6 +58,7 @@ export default function Navbar() {
                 background: "transparent",
                 color: "#fff",
                 boxShadow: "none",
+                textDecoration: "none",
               }}
             >
               Job Details
@@ -63,17 +66,14 @@ export default function Navbar() {
           )}
           {user ? (
             <>
-              <span className="text-base" style={{ marginRight: "0.5rem" }}>
-                Hello, <span className="font-bold">{user.username}</span>
-              </span>
               <button
                 onClick={handleLogout}
-                className="btn"
+                className="font-bold text-lg btn"
                 style={{
-                  background: "#fff",
-                  color: "#2563eb",
-                  fontWeight: 600,
-                  marginLeft: "0.5rem",
+                  background: "transparent",
+                  color: "#fff",
+                  boxShadow: "none",
+                  textDecoration: "none",
                 }}
               >
                 Logout
@@ -88,6 +88,7 @@ export default function Navbar() {
                   background: "transparent",
                   color: "#fff",
                   boxShadow: "none",
+                  textDecoration: "none",
                 }}
               >
                 Login
@@ -99,6 +100,7 @@ export default function Navbar() {
                   background: "transparent",
                   color: "#fff",
                   boxShadow: "none",
+                  textDecoration: "none",
                 }}
               >
                 Register

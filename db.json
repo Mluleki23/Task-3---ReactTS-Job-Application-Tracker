@@ -34,11 +34,16 @@
       "id": "2f26",
       "username": "Fi",
       "password": "456123"
+    },
+    {
+      "id": "78d0",
+      "username": "mlu@gmail.com",
+      "password": "1234"
     }
   ],
   "jobs": [
     {
-      "id": 1758783373699,
+      "id": "1758783373699",
       "company": "hgjgj",
       "role": "jkygtyuk",
       "status": "Applied",
@@ -48,7 +53,7 @@
       "userId": "29d8"
     },
     {
-      "id": 1758783677170,
+      "id": "1758783677170",
       "company": "dfxzh",
       "role": "hftx",
       "status": "Applied",
@@ -58,7 +63,7 @@
       "userId": "ba20"
     },
     {
-      "id": 1758783777722,
+      "id": "1758783777722",
       "company": "uiho",
       "role": "uihoh",
       "status": "Rejected",
@@ -68,7 +73,7 @@
       "userId": "ba20"
     },
     {
-      "id": 1758785913352,
+      "id": "1758785913352",
       "company": "drgxhfx",
       "role": "hfg",
       "status": "Rejected",
@@ -78,7 +83,7 @@
       "userId": "0c3f"
     },
     {
-      "id": 1758788892277,
+      "id": "1758788892277",
       "company": "drgrxrg",
       "role": "dgxdr",
       "status": "Applied",
@@ -88,7 +93,7 @@
       "userId": "5112"
     },
     {
-      "id": 1758792459035,
+      "id": "1758792459035",
       "company": "gchjg",
       "role": "fgxh",
       "status": "Interviewed",
