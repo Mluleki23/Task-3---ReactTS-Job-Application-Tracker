@@ -44,6 +44,40 @@ button:hover,
   background: #1e40af;
 }
 
+/* Green Buttons */
+.btn-green {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.08);
+}
+.btn-green:hover {
+  background: #16a34a;
+}
+
+/* Red Buttons */
+.btn-red {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+}
+.btn-red:hover {
+  background: #b91c1c;
+}
+
 /* Forms */
 input,
 select,
@@ -172,3 +206,28 @@ label {
 .space-y-2 > * + * {
   margin-top: 0.5rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

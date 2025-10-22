@@ -48,13 +48,13 @@ export default function JobCard({ job, onDelete, onEdit }: JobCardProps) {
           </button>
           <button
             onClick={() => onEdit(job)}
-            className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+            className="btn-green"
           >
             Edit
           </button>
           <button
             onClick={() => onDelete(job.id)}
-            className="px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700 transition-colors"
+            className="btn-red"
           >
             Delete
           </button>
