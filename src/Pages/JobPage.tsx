@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import JobForm from "../components/JobForm";
 import type { JobFormInput } from "../components/JobForm";
 import { AuthContext } from "../contexts/AuthContext";
@@ -10,7 +9,6 @@ import type { Job } from "../types";
 
 const JobPage = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   // Removed viewJob state, no longer needed
@@ -121,7 +119,7 @@ const JobPage = () => {
                         Delete
                       </button>
                       <button
-                        onClick={() => navigate(`/jobs/${job.id}`)}
+                        onClick={() => window.location.href = `/jobs/${job.id}`}
                         className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"
                       >
                         View Details

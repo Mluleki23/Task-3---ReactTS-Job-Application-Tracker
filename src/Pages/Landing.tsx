@@ -36,9 +36,7 @@ export default function Landing() {
       </section>
 
       {/* Decorative footer text */}
-      <footer className="mt-16 text-gray-400 text-sm">
-        © {new Date().getFullYear()} JobTracker. All rights reserved.
-      </footer>
+    
     </main>
   );
 }
