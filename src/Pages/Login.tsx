@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
@@ -27,7 +27,6 @@ export default function Login() {
         <div>
           <label className="block mb-1">Username</label>
           <input
-            className="w-full border p-2 rounded"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -36,18 +35,20 @@ export default function Login() {
           <label className="block mb-1">Password</label>
           <input
             type="password"
-            className="w-full border p-2 rounded"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-sky-600 text-white rounded"
-        >
+        <button type="submit" className="btn">
           Login
         </button>
       </form>
+      <div className="text-center mt-4">
+        <span className="text-gray-500">Don't have an account? </span>
+        <Link to="/register" style={{ color: "#2563eb", fontWeight: 600 }}>
+          Register
+        </Link>
+      </div>
     </main>
   );
 }
