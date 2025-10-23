@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { CheckCircle2, LineChart, Shield } from "lucide-react";
-import reactLogo from "../assets/react.svg";
 
 export default function Landing() {
   return (
@@ -46,7 +45,11 @@ export default function Landing() {
 
         <div className="showcase-card neon-glow">
           <div className="showcase-inner">
-            <img src={reactLogo} alt="App Illustration" style={{ width: "100%" }} />
+            <img
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=80"
+              alt="People collaborating on job applications and tracking progress"
+              style={{ width: "100%", borderRadius: 8 }}
+            />
           </div>
         </div>
       </section>
