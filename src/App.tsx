@@ -66,8 +66,8 @@ export default function App() {
             {/* Fallback for anything unknown */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />
         </div>
+        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
