@@ -22,6 +22,9 @@ export default function JobForm({
   );
   const [details, setDetails] = useState(initial?.details || "");
 
+  // local helpers
+  const isEditing = Boolean(initial && initial.id);
+
   // Update form fields when initial prop changes
   useEffect(() => {
     if (initial) {
@@ -62,6 +65,88 @@ export default function JobForm({
       setDetails("");
     }
   };
+
+  return (
+    <form onSubmit={submit} className="space-y-4 max-w-4xl card p-4 sm:p-6">
+      <div className="form-row cols-2">
+        <div>
+          <label className="block text-base font-normal mb-1">
+            Company name
+          </label>
+          <input
+            placeholder="e.g. OpenAI"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-normal mb-1">Role</label>
+          <input
+            placeholder="e.g. Frontend Engineer"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
+      </div>
+
+      <div className="form-row cols-2">
+        <div>
+          <label className="block text-base font-normal mb-1">Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as JobStatus)}
+            className="w-full border border-gray-300 p-2 rounded"
+          >
+            <option>Applied</option>
+            <option>Interviewed</option>
+            <option>Rejected</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-base font-normal mb-1">
+            Date applied
+          </label>
+          <input
+            type="date"
+            value={dateApplied}
+            onChange={(e) => setDateApplied(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+            placeholder="MM/DD/YYYY"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-base font-normal mb-1">
+          Extra details
+        </label>
+        <textarea
+          placeholder="Add notes such as contact person, job link, or next steps"
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
+          rows={3}
+        />
+      </div>
+
+      <div className="form-actions">
+        {initial && onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+          >
+            Cancel
+          </button>
+        )}
+        <button type="submit" className="btn-green btn-lg">
+          {initial ? "Update" : "Save"}
+        </button>
+      </div>
+    </form>
+  );
 
   return (
     <form onSubmit={submit} className="space-y-4 max-w-4xl">

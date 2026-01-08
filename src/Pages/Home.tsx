@@ -130,7 +130,9 @@ export default function Home() {
 
   return (
     <main className="main-content w-full max-w-7xl mx-auto mt-8 mb-16 pb-8 px-4">
-      <h1 className="text-4xl font-bold mb-4 text-center">Welcome to JobTracker</h1>
+      <h1 className="text-4xl font-bold mb-4 text-center">
+        Welcome to JobTracker
+      </h1>
       <p className="text-lg text-gray-500 mb-6 max-w-xl mx-auto text-center">
         Effortlessly track your job applications, manage your opportunities, and
         stay organized on your career journey.
@@ -140,7 +142,9 @@ export default function Home() {
 
       {/* Add/Edit Job Form */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">{editingJob ? "Edit Job" : "Add Job"}</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          {editingJob ? "Edit Job" : "Add Job"}
+        </h2>
         <JobForm
           onSubmit={handleAddOrUpdate}
           initial={editingJob || undefined}
@@ -150,7 +154,7 @@ export default function Home() {
 
       {/* Search / Filter / Sort Controls */}
       <div className="mb-6 bg-white p-4 rounded-lg shadow border border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end controls-grid">
           <div>
             <label className="block mb-1 text-sm font-medium">Search</label>
             <input
@@ -158,7 +162,7 @@ export default function Home() {
               placeholder="Search jobs..."
               value={search}
               onChange={handleSearch}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="control-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -167,7 +171,7 @@ export default function Home() {
             <select
               value={status}
               onChange={handleStatus}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="control-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Status</option>
               <option value="Applied">Applied</option>
@@ -177,23 +181,34 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block mb-1 text-sm font-medium">Sort By</label>
+            <label className="block mb-1 text-sm font-medium">Sort</label>
             <select
               value={sort}
               onChange={handleSort}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="control-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="desc">Newest First</option>
               <option value="asc">Oldest First</option>
             </select>
           </div>
 
-          <div className="flex items-end justify-end">
+          <div className="flex items-end justify-end gap-2">
             <button
               className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
               onClick={() => setSearchParams({})}
             >
               Clear Filters
+            </button>
+            <button
+              className="btn btn-lg"
+              onClick={() =>
+                setSearchParams({
+                  ...Object.fromEntries(searchParams),
+                  search: "",
+                })
+              }
+            >
+              Reset Search
             </button>
           </div>
         </div>
@@ -202,12 +217,21 @@ export default function Home() {
       {/* Job List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {jobs.length === 0 ? (
-          <div className="p-6 bg-white rounded shadow">No jobs found. Add a job to get started.</div>
+          <div className="p-6 bg-white rounded shadow">
+            No jobs found. Add a job to get started.
+          </div>
         ) : filtered.length === 0 ? (
-          <div className="p-6 bg-white rounded shadow">No jobs match your search or filters. Try clearing filters.</div>
+          <div className="p-6 bg-white rounded shadow">
+            No jobs match your search or filters. Try clearing filters.
+          </div>
         ) : (
           filtered.map((job) => (
-            <JobCard key={job.id} job={job} onDelete={handleDelete} onEdit={(j) => setEditingJob(j)} />
+            <JobCard
+              key={job.id}
+              job={job}
+              onDelete={handleDelete}
+              onEdit={(j) => setEditingJob(j)}
+            />
           ))
         )}
       </div>

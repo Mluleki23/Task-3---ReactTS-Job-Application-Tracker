@@ -193,23 +193,30 @@ const JobPage = () => {
         </div>
       </div>
 
-      <div className="mt-8 overflow-x-auto">
-        <table className="w-full border-collapse border-2 border-gray-400 bg-white shadow-lg">
+      <div className="mt-8 overflow-x-auto -mx-4 px-4">
+        <table className="min-w-full table-fixed border-collapse border border-gray-300 bg-white shadow-lg">
+          <colgroup>
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "25%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+          </colgroup>
           <thead>
             <tr className="bg-gray-50">
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
                 Company
               </th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
                 Role
               </th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
                 Status
               </th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
                 Date applied
               </th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
                 Actions
               </th>
             </tr>
@@ -219,24 +226,25 @@ const JobPage = () => {
               <tr>
                 <td
                   colSpan={5}
-                  className="border-2 border-gray-400 px-4 py-8 text-center text-gray-500"
+                  className="border border-gray-300 px-4 py-8 text-center text-gray-500"
                 >
                   {jobs.length === 0
-                    ? "No jobs found."
-                    : "No jobs match your search criteria."}
+                    ? "No jobs found. Add a job to get started."
+                    : "No jobs match your search criteria. Try clearing filters or adjusting your search."}
                 </td>
               </tr>
             ) : (
               filteredAndSortedJobs.map((job) => (
                 <tr key={job.id} className="hover:bg-gray-50">
-                  <td className="border-2 border-gray-400 px-4 py-3">
+                  <td className="border border-gray-300 px-4 py-3 align-middle overflow-hidden truncate">
                     {job.company}
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
+                  <td className="border border-gray-300 px-4 py-3 align-middle overflow-hidden truncate">
                     {job.role}
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
+                  <td className="border border-gray-300 px-4 py-3 align-middle">
                     <span
+                      className="inline-block align-middle"
                       style={{
                         color: getStatusColor(job.status),
                         fontWeight: "600",
@@ -245,11 +253,11 @@ const JobPage = () => {
                       {job.status}
                     </span>
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
+                  <td className="border border-gray-300 px-4 py-3 align-middle whitespace-nowrap">
                     {job.dateApplied}
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
-                    <div className="flex gap-2">
+                  <td className="border border-gray-300 px-4 py-3 align-middle whitespace-nowrap">
+                    <div className="flex gap-2 items-center">
                       <button
                         onClick={() => setEditingJob(job)}
                         className="btn-green"
