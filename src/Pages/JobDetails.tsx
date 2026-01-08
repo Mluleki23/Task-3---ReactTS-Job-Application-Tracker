@@ -13,9 +13,7 @@ const JobDetails: React.FC = () => {
   useEffect(() => {
     if (!user) return;
     fetchJobs().then((jobs) => {
-      const found = jobs.find(
-        (j) => j.id === id && j.userId === user.id
-      );
+      const found = jobs.find((j) => j.id === id && j.userId === user.id);
       setJob(found || null);
     });
   }, [id, user]);

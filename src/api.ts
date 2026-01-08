@@ -7,13 +7,21 @@ export const createJob = async (job: Job) => {
   const res = await API.post("/jobs", job);
   const data = res.data as Job;
   // Normalize id and userId to strings
-  return { ...data, id: String(data.id), userId: String((data as any).userId) } as Job;
+  return {
+    ...data,
+    id: String(data.id),
+    userId: String((data as any).userId),
+  } as Job;
 };
 
 export const fetchJobs = async () => {
   const res = await API.get("/jobs");
   // Normalize ids to strings so client/server types match
-  return (res.data as any[]).map((j) => ({ ...j, id: String(j.id), userId: String(j.userId) })) as Job[];
+  return (res.data as any[]).map((j) => ({
+    ...j,
+    id: String(j.id),
+    userId: String(j.userId),
+  })) as Job[];
 };
 export const deleteJob = async (id: number | string) => {
   try {
@@ -25,7 +33,10 @@ export const deleteJob = async (id: number | string) => {
     if (err && err.response && err.response.status === 404) {
       try {
         const all = await API.get("/jobs");
-        console.error("API deleteJob diagnostic - all jobs from server:", all.data);
+        console.error(
+          "API deleteJob diagnostic - all jobs from server:",
+          all.data
+        );
       } catch (fetchErr) {
         console.error("Failed to fetch jobs for diagnostics:", fetchErr);
       }
@@ -38,5 +49,9 @@ export const deleteJob = async (id: number | string) => {
 export const updateJob = async (job: Job) => {
   const res = await API.put(`/jobs/${job.id}`, job);
   const data = res.data as Job;
-  return { ...data, id: String(data.id), userId: String((data as any).userId) } as Job;
+  return {
+    ...data,
+    id: String(data.id),
+    userId: String((data as any).userId),
+  } as Job;
 };

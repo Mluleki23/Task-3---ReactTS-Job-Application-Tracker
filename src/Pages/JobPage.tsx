@@ -77,7 +77,10 @@ const JobPage = () => {
           `Delete failed: the job was not found on the server. Please refresh the page and try again. Check that the job exists in db.json and that the server is running on port 5000.`
         );
       } else {
-        alert("Failed to delete job: " + (err instanceof Error ? err.message : String(err)));
+        alert(
+          "Failed to delete job: " +
+            (err instanceof Error ? err.message : String(err))
+        );
       }
     }
   };
@@ -92,24 +95,25 @@ const JobPage = () => {
   // Filter and sort jobs
   const filteredAndSortedJobs = jobs
     .filter((job) => {
-      const matchesSearch = 
+      const matchesSearch =
         job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.details.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesStatus = statusFilter === "all" || job.status === statusFilter;
-      
+
+      const matchesStatus =
+        statusFilter === "all" || job.status === statusFilter;
+
       return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
       let aValue: any = a[sortBy as keyof Job];
       let bValue: any = b[sortBy as keyof Job];
-      
+
       if (sortBy === "dateApplied") {
         aValue = new Date(aValue).getTime();
         bValue = new Date(bValue).getTime();
       }
-      
+
       if (sortOrder === "asc") {
         return aValue > bValue ? 1 : -1;
       } else {
@@ -119,12 +123,16 @@ const JobPage = () => {
 
   return (
     <div className="main-content w-full max-w-7xl mx-auto mt-8 mb-16 pb-8 px-4">
-      <h1 className="text-4xl font-bold mb-8 text-center">Job Application Tracker</h1>
-      
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Job Application Tracker
+      </h1>
+
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">{editingJob ? "Edit Job" : "Add Job"}</h2>
-        <JobForm 
-          onSubmit={handleAddOrUpdate} 
+        <h2 className="text-2xl font-bold mb-4">
+          {editingJob ? "Edit Job" : "Add Job"}
+        </h2>
+        <JobForm
+          onSubmit={handleAddOrUpdate}
           initial={editingJob || undefined}
           onCancel={() => setEditingJob(null)}
         />
@@ -142,7 +150,7 @@ const JobPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Status</label>
             <select
@@ -156,7 +164,7 @@ const JobPage = () => {
               <option value="Rejected">Rejected</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Sort By</label>
             <select
@@ -170,7 +178,7 @@ const JobPage = () => {
               <option value="status">Status</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Order</label>
             <select
@@ -189,31 +197,57 @@ const JobPage = () => {
         <table className="w-full border-collapse border-2 border-gray-400 bg-white shadow-lg">
           <thead>
             <tr className="bg-gray-50">
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Company</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Role</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Status</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Date applied</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Actions</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+                Company
+              </th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+                Role
+              </th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+                Status
+              </th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+                Date applied
+              </th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {filteredAndSortedJobs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="border-2 border-gray-400 px-4 py-8 text-center text-gray-500">
-                  {jobs.length === 0 ? "No jobs found." : "No jobs match your search criteria."}
+                <td
+                  colSpan={5}
+                  className="border-2 border-gray-400 px-4 py-8 text-center text-gray-500"
+                >
+                  {jobs.length === 0
+                    ? "No jobs found."
+                    : "No jobs match your search criteria."}
                 </td>
               </tr>
             ) : (
               filteredAndSortedJobs.map((job) => (
                 <tr key={job.id} className="hover:bg-gray-50">
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.company}</td>
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.role}</td>
                   <td className="border-2 border-gray-400 px-4 py-3">
-                    <span style={{ color: getStatusColor(job.status), fontWeight: "600" }}>
+                    {job.company}
+                  </td>
+                  <td className="border-2 border-gray-400 px-4 py-3">
+                    {job.role}
+                  </td>
+                  <td className="border-2 border-gray-400 px-4 py-3">
+                    <span
+                      style={{
+                        color: getStatusColor(job.status),
+                        fontWeight: "600",
+                      }}
+                    >
                       {job.status}
                     </span>
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.dateApplied}</td>
+                  <td className="border-2 border-gray-400 px-4 py-3">
+                    {job.dateApplied}
+                  </td>
                   <td className="border-2 border-gray-400 px-4 py-3">
                     <div className="flex gap-2">
                       <button

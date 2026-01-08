@@ -28,7 +28,9 @@ export default function JobForm({
       setCompany(initial.company || "");
       setRole(initial.role || "");
       setStatus((initial.status as JobStatus) || "Applied");
-      setDateApplied(initial.dateApplied || new Date().toISOString().slice(0, 10));
+      setDateApplied(
+        initial.dateApplied || new Date().toISOString().slice(0, 10)
+      );
       setDetails(initial.details || "");
     } else {
       setCompany("");
@@ -65,7 +67,9 @@ export default function JobForm({
     <form onSubmit={submit} className="space-y-4 max-w-4xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-base font-normal mb-1">Company name</label>
+          <label className="block text-base font-normal mb-1">
+            Company name
+          </label>
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
@@ -81,7 +85,7 @@ export default function JobForm({
           />
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-base font-normal mb-1">Status</label>
@@ -96,7 +100,9 @@ export default function JobForm({
           </select>
         </div>
         <div>
-          <label className="block text-base font-normal mb-1">Date applied</label>
+          <label className="block text-base font-normal mb-1">
+            Date applied
+          </label>
           <input
             type="date"
             value={dateApplied}
@@ -106,21 +112,20 @@ export default function JobForm({
           />
         </div>
       </div>
-      
+
       <div>
-        <label className="block text-base font-normal mb-1">Extra details</label>
+        <label className="block text-base font-normal mb-1">
+          Extra details
+        </label>
         <input
           value={details}
           onChange={(e) => setDetails(e.target.value)}
           className="w-full border border-gray-300 p-2 rounded"
         />
       </div>
-      
+
       <div className="flex gap-2">
-        <button
-          type="submit"
-          className="btn-green"
-        >
+        <button type="submit" className="btn-green">
           {initial ? "Update" : "Save"}
         </button>
         {initial && onCancel && (
