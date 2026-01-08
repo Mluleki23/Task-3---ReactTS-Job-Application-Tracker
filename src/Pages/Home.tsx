@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import JobForm from "../components/JobForm";
-import type { JobFormInput } from "../components/JobForm";
-import JobCard from "../components/JobCard";
+import JobForm from "../Components/JobForm";
+import type { JobFormInput } from "../Components/JobForm";
+import JobCard from "../Components/JobCard";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchJobs, createJob, updateJob, deleteJob } from "../api";
 import type { Job } from "../types";
@@ -154,7 +154,7 @@ export default function Home() {
 
       {/* Search / Filter / Sort Controls */}
       <div className="mb-6 bg-white p-4 rounded-lg shadow border border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end controls-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end controls-grid">
           <div>
             <label className="block mb-1 text-sm font-medium">Search</label>
             <input

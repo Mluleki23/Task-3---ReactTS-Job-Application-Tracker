@@ -146,7 +146,7 @@ label {
   }
   .controls-grid > div {
     width: 100%;
-    max-width: 360px; /* cap width so search box matches selects */
+    max-width: 100%; /* Allow full width to match elements below */
   }
 
   /* Ensure fields inside controls share same sizing */
@@ -154,16 +154,18 @@ label {
     width: 100%;
     box-sizing: border-box;
     display: block;
-    max-width: 360px; /* default cap */
+    max-width: 100%; /* Allow full width to match elements below */
   }
 
   /* Force exact matching width on desktop for consistent visual alignment */
   @media (min-width: 768px) {
     .controls-grid .control-field {
-      width: 320px;
-      max-width: 320px;
+      width: 100%;
+      max-width: 100%;
     }
-    .controls-grid > div { width: 320px; }
+    .controls-grid > div {
+      width: 100%;
+    }
   }
 }
 
@@ -549,5 +551,26 @@ main.neon-hero-wrap {
   }
   .neon-cta-row {
     justify-content: center;
+  }
+}
+
+/* Make all control fields equal width */
+@media (min-width: 768px) {
+  /* Make all control fields the same width */
+  .controls-grid > div {
+    width: 100% !important;
+    max-width: 300px !important; /* Fixed width for all control fields */
+  }
+
+  /* Ensure the input fields inside also have consistent width */
+  .controls-grid .control-field {
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+
+  /* Special handling for the buttons container to not be constrained */
+  .controls-grid > div:last-child {
+    width: auto !important;
+    max-width: none !important;
   }
 }

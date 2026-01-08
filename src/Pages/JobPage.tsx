@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import JobForm from "../components/JobForm";
-import type { JobFormInput } from "../components/JobForm";
+import JobForm from "../Components/JobForm";
+import type { JobFormInput } from "../Components/JobForm";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchJobs, createJob, deleteJob, updateJob } from "../api";
 import type { Job } from "../types";
