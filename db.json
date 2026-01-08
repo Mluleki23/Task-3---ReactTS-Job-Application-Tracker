@@ -44,6 +44,16 @@
       "id": "dd2a",
       "username": "Sne@gmail.com",
       "password": "1452"
+    },
+    {
+      "id": "2236",
+      "username": "Meloh",
+      "password": "789456"
+    },
+    {
+      "id": "57b4",
+      "username": "Mluu",
+      "password": "321456"
     }
   ],
   "jobs": [
@@ -108,7 +118,7 @@
       "userId": "2f26"
     },
     {
-      "id": 1761128881145,
+      "id": "1761128881145",
       "company": "trtdryd",
       "role": "tdyhtyh",
       "status": "Interviewed",
@@ -118,7 +128,7 @@
       "userId": "dd2a"
     },
     {
-      "id": 1761130717166,
+      "id": "1761130717166",
       "company": " ",
       "role": "rtshtr",
       "status": "Applied",
@@ -126,6 +136,26 @@
       "details": "",
       "createdAt": "2025-10-22T10:58:37.166Z",
       "userId": "dd2a"
+    },
+    {
+      "id": 1767878025851,
+      "company": "srzgtf",
+      "role": "sfeztg",
+      "status": "Applied",
+      "dateApplied": "2026-01-08",
+      "details": "rdzgde",
+      "createdAt": "2026-01-08T13:13:45.851Z",
+      "userId": "57b4"
+    },
+    {
+      "id": 1767878052435,
+      "company": "resat",
+      "role": "dsfz",
+      "status": "Interviewed",
+      "dateApplied": "2026-01-08",
+      "details": "dfgszdfg",
+      "createdAt": "2026-01-08T13:14:12.435Z",
+      "userId": "57b4"
     }
   ]
 }

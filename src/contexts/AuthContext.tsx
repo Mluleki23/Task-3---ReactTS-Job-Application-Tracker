@@ -20,15 +20,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const res = await axios.get<User[]>(
-      `http://localhost:3000/users?username=${username}&password=${password}`
-    );
-    if (res.data.length > 0) {
-      setUser(res.data[0]);
-      localStorage.setItem("user", JSON.stringify(res.data[0]));
-      return true;
+    try {
+      const res = await axios.get<User[]>(
+        `http://localhost:5001/users?username=${username}&password=${password}`
+      );
+      if (res.data.length > 0) {
+        setUser(res.data[0]);
+        localStorage.setItem("user", JSON.stringify(res.data[0]));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

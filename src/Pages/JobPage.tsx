@@ -1,16 +1,22 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import JobForm from "../components/JobForm";
 import type { JobFormInput } from "../components/JobForm";
 import { AuthContext } from "../contexts/AuthContext";
-import { fetchJobs, createJob } from "../api";
+import { fetchJobs, createJob, deleteJob, updateJob } from "../api";
 import type { Job } from "../types";
 
 // ...existing code...
 
 const JobPage = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("dateApplied");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   // Removed viewJob state, no longer needed
 
   // Fetch jobs for the logged-in user
@@ -28,16 +34,17 @@ const JobPage = () => {
       return;
     }
     if (editingJob) {
-      // Update job (not implemented in API, just update local for now)
-      setJobs((jobs) =>
-        jobs.map((j) =>
-          j.id === editingJob.id
-            ? { ...job, userId: user.id, id: editingJob.id }
-            : j
-        )
-      );
-      setEditingJob(null);
-      alert("Job updated!");
+      try {
+        const updatedJob = { ...job, userId: user.id, id: editingJob.id };
+        const saved = await updateJob(updatedJob);
+        setJobs((jobs) =>
+          jobs.map((j) => (j.id === editingJob.id ? saved : j))
+        );
+        setEditingJob(null);
+        alert("Job updated successfully!");
+      } catch (err) {
+        alert("Failed to update job");
+      }
     } else {
       try {
         const jobToSave = { ...job, userId: user.id };
@@ -50,9 +57,14 @@ const JobPage = () => {
     }
   };
 
-  const handleDelete = (id: number) => {
-    setJobs((jobs) => jobs.filter((j) => j.id !== id));
-    alert("Job deleted!");
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteJob(id);
+      setJobs((jobs) => jobs.filter((j) => j.id !== id));
+      alert("Job deleted successfully!");
+    } catch (err) {
+      alert("Failed to delete job");
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -62,8 +74,36 @@ const JobPage = () => {
     return "gray";
   };
 
+  // Filter and sort jobs
+  const filteredAndSortedJobs = jobs
+    .filter((job) => {
+      const matchesSearch = 
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.details.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesStatus = statusFilter === "all" || job.status === statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      let aValue: any = a[sortBy as keyof Job];
+      let bValue: any = b[sortBy as keyof Job];
+      
+      if (sortBy === "dateApplied") {
+        aValue = new Date(aValue).getTime();
+        bValue = new Date(bValue).getTime();
+      }
+      
+      if (sortOrder === "asc") {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
   return (
-    <div className="main-content w-full max-w-5xl mx-auto mt-8 mb-16 pb-8 px-4">
+    <div className="main-content w-full max-w-7xl mx-auto mt-8 mb-16 pb-8 px-4">
       <h1 className="text-4xl font-bold mb-8 text-center">Job Application Tracker</h1>
       
       <div className="mb-8">
@@ -75,36 +115,91 @@ const JobPage = () => {
         />
       </div>
 
+      <div className="mb-6 bg-white p-4 rounded-lg shadow border border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label className="block mb-1 text-sm font-medium">Search</label>
+            <input
+              type="text"
+              placeholder="Search jobs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          
+          <div>
+            <label className="block mb-1 text-sm font-medium">Status</label>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Status</option>
+              <option value="Applied">Applied</option>
+              <option value="Interviewed">Interviewed</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block mb-1 text-sm font-medium">Sort By</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="dateApplied">Date Applied</option>
+              <option value="company">Company</option>
+              <option value="role">Role</option>
+              <option value="status">Status</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block mb-1 text-sm font-medium">Order</label>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="desc">Newest First</option>
+              <option value="asc">Oldest First</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div className="mt-8 overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 bg-white">
+        <table className="w-full border-collapse border-2 border-gray-400 bg-white shadow-lg">
           <thead>
             <tr className="bg-gray-50">
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Company</th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Role</th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Status</th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Date applied</th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Actions</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Company</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Role</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Status</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Date applied</th>
+              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {jobs.length === 0 ? (
+            {filteredAndSortedJobs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                  No jobs found.
+                <td colSpan={5} className="border-2 border-gray-400 px-4 py-8 text-center text-gray-500">
+                  {jobs.length === 0 ? "No jobs found." : "No jobs match your search criteria."}
                 </td>
               </tr>
             ) : (
-              jobs.map((job) => (
+              filteredAndSortedJobs.map((job) => (
                 <tr key={job.id} className="hover:bg-gray-50">
-                  <td className="border border-gray-300 px-4 py-3">{job.company}</td>
-                  <td className="border border-gray-300 px-4 py-3">{job.role}</td>
-                  <td className="border border-gray-300 px-4 py-3">
+                  <td className="border-2 border-gray-400 px-4 py-3">{job.company}</td>
+                  <td className="border-2 border-gray-400 px-4 py-3">{job.role}</td>
+                  <td className="border-2 border-gray-400 px-4 py-3">
                     <span style={{ color: getStatusColor(job.status), fontWeight: "600" }}>
                       {job.status}
                     </span>
                   </td>
-                  <td className="border border-gray-300 px-4 py-3">{job.dateApplied}</td>
-                  <td className="border border-gray-300 px-4 py-3">
+                  <td className="border-2 border-gray-400 px-4 py-3">{job.dateApplied}</td>
+                  <td className="border-2 border-gray-400 px-4 py-3">
                     <div className="flex gap-2">
                       <button
                         onClick={() => setEditingJob(job)}
@@ -119,7 +214,7 @@ const JobPage = () => {
                         Delete
                       </button>
                       <button
-                        onClick={() => window.location.href = `/jobs/${job.id}`}
+                        onClick={() => navigate(`/jobs/${job.id}`)}
                         className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"
                       >
                         View Details
