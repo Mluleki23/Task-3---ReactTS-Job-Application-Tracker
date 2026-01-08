@@ -49,7 +49,7 @@ export default function JobForm({
       dateApplied,
       details,
       createdAt: initial?.createdAt || new Date().toISOString(),
-      id: initial?.id || Date.now(),
+      id: initial?.id || Date.now().toString(),
     });
     // Reset form after adding new job
     if (!initial) {

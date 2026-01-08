@@ -14,7 +14,7 @@ const JobDetails: React.FC = () => {
     if (!user) return;
     fetchJobs().then((jobs) => {
       const found = jobs.find(
-        (j) => j.id === Number(id) && j.userId === user.id
+        (j) => j.id === id && j.userId === user.id
       );
       setJob(found || null);
     });

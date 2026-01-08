@@ -57,13 +57,28 @@ const JobPage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number | string) => {
+    console.log(`[DEBUG] Attempting delete for id: ${id} (type: ${typeof id})`);
     try {
-      await deleteJob(id);
-      setJobs((jobs) => jobs.filter((j) => j.id !== id));
-      alert("Job deleted successfully!");
-    } catch (err) {
-      alert("Failed to delete job");
+      const status = await deleteJob(id);
+      console.log(`[DEBUG] deleteJob status: ${status}`);
+      if (status === 200 || status === 204) {
+        // Re-fetch to ensure we are in sync with the server
+        const all = await fetchJobs();
+        setJobs(all.filter((j) => j.userId === user!.id));
+        alert("Job deleted successfully!");
+      } else {
+        alert(`Failed to delete job: server responded with status ${status}`);
+      }
+    } catch (err: any) {
+      console.error("Failed to delete job", err);
+      if (err && err.message && err.message.includes("not found")) {
+        alert(
+          `Delete failed: the job was not found on the server. Please refresh the page and try again. Check that the job exists in db.json and that the server is running on port 5000.`
+        );
+      } else {
+        alert("Failed to delete job: " + (err instanceof Error ? err.message : String(err)));
+      }
     }
   };
 

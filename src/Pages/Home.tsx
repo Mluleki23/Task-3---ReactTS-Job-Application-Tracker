@@ -3,7 +3,7 @@ import JobForm from "../components/JobForm";
 import type { JobFormInput } from "../components/JobForm";
 import JobCard from "../components/JobCard";
 import { AuthContext } from "../contexts/AuthContext";
-import { fetchJobs, createJob } from "../api";
+import { fetchJobs, createJob, updateJob, deleteJob } from "../api";
 import type { Job } from "../types";
 import { useSearchParams } from "react-router-dom";
 
@@ -44,17 +44,20 @@ export default function Home() {
       alert("You must be logged in to add a job.");
       return;
     }
-    if (editingJob) {
-      // Update job (not implemented in API, just update local for now)
-      setJobs((jobs) =>
-        jobs.map((j) =>
-          j.id === editingJob.id
-            ? { ...job, userId: user.id, id: editingJob.id }
-            : j
-        )
-      );
-      setEditingJob(null);
-      alert("Job updated!");
+      if (editingJob) {
+      try {
+        const updatedJob = { ...job, userId: user.id, id: editingJob.id } as Job;
+        const saved = await updateJob(updatedJob);
+        setJobs((jobs) => jobs.map((j) => (j.id === saved.id ? saved : j)));
+        setEditingJob(null);
+        alert("Job updated!");
+      } catch (err) {
+        console.error("[ERROR] Failed to update job", err);
+        alert(
+          "Failed to update job: " +
+            (err instanceof Error ? err.message : String(err))
+        );
+      }
     } else {
       try {
         const jobToSave = { ...job, userId: user.id };
@@ -72,10 +75,33 @@ export default function Home() {
     }
   };
 
-  const handleDelete = (id: number) => {
-    // TODO: Call deleteJob API
-    setJobs((jobs) => jobs.filter((j) => j.id !== id));
-    alert("Job deleted!");
+  const handleDelete = async (id: number | string) => {
+    console.log(`[DEBUG] Attempting delete for id: ${id} (type: ${typeof id})`);
+    try {
+      const status = await deleteJob(id);
+      console.log(`[DEBUG] deleteJob status: ${status}`);
+      if (status === 200 || status === 204) {
+        // Re-fetch to ensure we are in sync with the server
+        const all = await fetchJobs();
+        setJobs(all.filter((j) => j.userId === user!.id));
+        alert("Job deleted!");
+      } else {
+        alert(`Failed to delete job: server responded with status ${status}`);
+      }
+    } catch (err: any) {
+      console.error("[ERROR] Failed to delete job", err);
+      // If it's a 404 diagnostic message, surface actionable guidance
+      if (err && err.message && err.message.includes("not found")) {
+        alert(
+          `Delete failed: the job was not found on the server. Please refresh the page and try again. Check that the job exists in db.json and that the server is running on port 5000.`
+        );
+      } else {
+        alert(
+          "Failed to delete job: " +
+            (err instanceof Error ? err.message : String(err))
+        );
+      }
+    }
   };
 
   // UI Handlers for search/filter/sort
