@@ -14,6 +14,7 @@ export default function Login() {
 
     const success = await login(username, password);
     if (success) {
+      alert("Login successful! Redirecting to jobs page...");
       nav("/jobs");
     } else {
       alert("Invalid username or password");
