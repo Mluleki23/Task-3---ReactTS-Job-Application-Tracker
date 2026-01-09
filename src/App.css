@@ -11,7 +11,14 @@ main,
 .main-content {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.5rem; /* larger side padding to prevent touching viewport edges */
+}
+
+@media (max-width: 600px) {
+  main,
+  .main-content {
+    padding: 1rem 0.75rem; /* ensure comfortable mobile spacing */
+  }
 }
 
 /* Headings */
@@ -83,26 +90,106 @@ input,
 select,
 textarea {
   border: 1px solid #cbd5e1;
-  border-radius: 5px;
-  padding: 0.5rem;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
   font-size: 1rem;
   width: 100%;
-  margin-top: 0.2rem;
-  margin-bottom: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
   background: #fff;
-  transition: border 0.2s;
+  transition: border 0.12s, box-shadow 0.12s;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #9aa4b2;
 }
 input:focus,
 select:focus,
 textarea:focus {
   border-color: #2563eb;
   outline: none;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
 }
 
 label {
-  font-size: 0.98rem;
-  color: #334155;
-  font-weight: 500;
+  font-size: 0.95rem;
+  color: #0f172a;
+  font-weight: 600;
+  display: block;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem; /* increased gap for clearer separation */
+  padding: 0.25rem 0; /* small inner padding to keep fields away from edges */
+}
+
+/* Add horizontal padding inside each column to keep inputs from touching */
+.form-row > div {
+  padding: 0 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .form-row.cols-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .form-row.cols-2 > div {
+    padding: 0 0.75rem;
+  }
+
+  /* Controls grid: keep controls visually consistent width */
+  .controls-grid {
+    align-items: end;
+    justify-items: start;
+  }
+  .controls-grid > div {
+    width: 100%;
+    max-width: 100%; /* Allow full width to match elements below */
+  }
+
+  /* Ensure fields inside controls share same sizing */
+  .controls-grid .control-field {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    max-width: 100%; /* Allow full width to match elements below */
+  }
+
+  /* Force exact matching width on desktop for consistent visual alignment */
+  @media (min-width: 768px) {
+    .controls-grid .control-field {
+      width: 100%;
+      max-width: 100%;
+    }
+    .controls-grid > div {
+      width: 100%;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-lg {
+  padding: 0.6rem 1.25rem;
+  font-size: 1.02rem;
+  border-radius: 8px;
+}
+
+.table-header {
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.table-cell {
+  vertical-align: middle;
 }
 
 /* Cards */
@@ -111,13 +198,20 @@ label {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(30, 64, 175, 0.07);
-  padding: 1.2rem 1.5rem;
+  padding: 1.5rem 2rem; /* increased padding so content doesn't touch edges */
   margin-bottom: 1.2rem;
   transition: box-shadow 0.2s;
 }
 .card:hover,
 .job-card:hover {
   box-shadow: 0 4px 24px rgba(30, 64, 175, 0.13);
+}
+
+@media (max-width: 600px) {
+  .card,
+  .job-card {
+    padding: 1rem 0.9rem; /* comfortable mobile padding */
+  }
 }
 
 /* Status Badges */
@@ -207,19 +301,6 @@ label {
   margin-top: 0.5rem;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Landing Page Enhancements */
 .hero {
   width: 100%;
@@ -230,7 +311,11 @@ label {
   align-items: center;
   gap: 2rem;
   padding: 2rem 1rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.6)
+  );
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(30, 64, 175, 0.08);
 }
@@ -241,9 +326,17 @@ label {
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
-  background: radial-gradient(1200px 600px at 20% -10%, rgba(37,99,235,0.18), transparent 60%),
-              radial-gradient(800px 600px at 90% 10%, rgba(34,197,94,0.18), transparent 60%),
-              linear-gradient(120deg, #f0f4f8 0%, #e0e7ef 100%);
+  background: radial-gradient(
+      1200px 600px at 20% -10%,
+      rgba(37, 99, 235, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 600px at 90% 10%,
+      rgba(34, 197, 94, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(120deg, #f0f4f8 0%, #e0e7ef 100%);
 }
 
 .hero-title {
@@ -315,7 +408,7 @@ label {
 .hero-illustration img {
   width: 100%;
   max-width: 420px;
-  filter: drop-shadow(0 8px 28px rgba(0,0,0,0.12));
+  filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.12));
 }
 
 @media (max-width: 900px) {
@@ -342,9 +435,17 @@ label {
   max-width: none;
   margin: 0;
   width: 100vw;
-  background: radial-gradient(900px 500px at -10% 0%, rgba(59,130,246,0.25), transparent 60%),
-              radial-gradient(900px 500px at 110% 10%, rgba(34,197,94,0.22), transparent 60%),
-              linear-gradient(180deg, #0b1220 0%, #0a0f1c 100%);
+  background: radial-gradient(
+      900px 500px at -10% 0%,
+      rgba(59, 130, 246, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 110% 10%,
+      rgba(34, 197, 94, 0.22),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #0b1220 0%, #0a0f1c 100%);
 }
 /* Ensure global main defaults don't center or constrain landing */
 main.neon-hero-wrap {
@@ -369,14 +470,21 @@ main.neon-hero-wrap {
   line-height: 1.05;
   margin: 0 0 14px 0;
 }
-.neon-title-accent { color: #34d399; }
+.neon-title-accent {
+  color: #34d399;
+}
 .neon-sub {
   color: #94a3b8;
   font-size: 1.15rem;
   margin: 0 0 18px 0;
   max-width: 640px;
 }
-.neon-cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.neon-cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 .neon-cta {
   background: linear-gradient(90deg, #22c55e, #10b981);
   color: white;
@@ -384,17 +492,20 @@ main.neon-hero-wrap {
   border-radius: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
-  border: 1px solid rgba(16,185,129,0.35);
-  box-shadow: 0 10px 30px rgba(16,185,129,0.25), 0 1px 0 rgba(255,255,255,0.06) inset;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }
-.neon-cta:hover { filter: brightness(1.05); }
+.neon-cta:hover {
+  filter: brightness(1.05);
+}
 .neon-cta-secondary {
-  background: rgba(59,130,246,0.1);
+  background: rgba(59, 130, 246, 0.1);
   color: #93c5fd;
   padding: 12px 18px;
   border-radius: 10px;
   font-weight: 700;
-  border: 1px solid rgba(59,130,246,0.35);
+  border: 1px solid rgba(59, 130, 246, 0.35);
 }
 .neon-glow {
   position: relative;
@@ -404,41 +515,62 @@ main.neon-hero-wrap {
   position: absolute;
   inset: -2px;
   border-radius: 12px;
-  background: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(34,197,94,0.6));
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.6),
+    rgba(34, 197, 94, 0.6)
+  );
   filter: blur(12px);
   z-index: -1;
   opacity: 0.5;
 }
 .showcase-card {
-  background: rgba(15,23,42,0.6);
-  border: 1px solid rgba(148,163,184,0.15);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 16px;
   padding: 18px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
 }
 .showcase-inner {
-  background: linear-gradient(180deg, rgba(2,6,23,0.3), rgba(2,6,23,0.6));
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0.3), rgba(2, 6, 23, 0.6));
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
 }
-.showcase-inner img { width: 100%; max-width: 440px; }
-
-@media (max-width: 900px) {
-  .neon-hero { grid-template-columns: 1fr; text-align: center; }
-  .neon-cta-row { justify-content: center; }
+.showcase-inner img {
+  width: 100%;
+  max-width: 440px;
 }
 
+@media (max-width: 900px) {
+  .neon-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .neon-cta-row {
+    justify-content: center;
+  }
+}
 
+/* Make all control fields equal width */
+@media (min-width: 768px) {
+  /* Make all control fields the same width */
+  .controls-grid > div {
+    width: 100% !important;
+    max-width: 300px !important; /* Fixed width for all control fields */
+  }
 
+  /* Ensure the input fields inside also have consistent width */
+  .controls-grid .control-field {
+    width: 100% !important;
+    max-width: 300px !important;
+  }
 
-
-
-
-
-
-
-
-
+  /* Special handling for the buttons container to not be constrained */
+  .controls-grid > div:last-child {
+    width: auto !important;
+    max-width: none !important;
+  }
+}

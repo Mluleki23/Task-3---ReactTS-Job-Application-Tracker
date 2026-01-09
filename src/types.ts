@@ -1,7 +1,7 @@
 // src/types.ts
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   password: string;
 }
@@ -9,12 +9,12 @@ export interface User {
 export type JobStatus = "Applied" | "Interviewed" | "Rejected";
 
 export interface Job {
-  id: number;
+  id: string;
   company: string;
   role: string;
   status: JobStatus;
   dateApplied: string;
   details: string;
-  userId: number;
+  userId: string;
   createdAt: string;
 }

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import JobForm from "../components/JobForm";
-import type { JobFormInput } from "../components/JobForm";
+import JobForm from "../Components/JobForm";
+import type { JobFormInput } from "../Components/JobForm";
 import { AuthContext } from "../contexts/AuthContext";
 import { fetchJobs, createJob, deleteJob, updateJob } from "../api";
 import type { Job } from "../types";
@@ -57,13 +57,31 @@ const JobPage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number | string) => {
+    console.log(`[DEBUG] Attempting delete for id: ${id} (type: ${typeof id})`);
     try {
-      await deleteJob(id);
-      setJobs((jobs) => jobs.filter((j) => j.id !== id));
-      alert("Job deleted successfully!");
-    } catch (err) {
-      alert("Failed to delete job");
+      const status = await deleteJob(id);
+      console.log(`[DEBUG] deleteJob status: ${status}`);
+      if (status === 200 || status === 204) {
+        // Re-fetch to ensure we are in sync with the server
+        const all = await fetchJobs();
+        setJobs(all.filter((j) => j.userId === user!.id));
+        alert("Job deleted successfully!");
+      } else {
+        alert(`Failed to delete job: server responded with status ${status}`);
+      }
+    } catch (err: any) {
+      console.error("Failed to delete job", err);
+      if (err && err.message && err.message.includes("not found")) {
+        alert(
+          `Delete failed: the job was not found on the server. Please refresh the page and try again. Check that the job exists in db.json and that the server is running on port 5000.`
+        );
+      } else {
+        alert(
+          "Failed to delete job: " +
+            (err instanceof Error ? err.message : String(err))
+        );
+      }
     }
   };
 
@@ -77,24 +95,25 @@ const JobPage = () => {
   // Filter and sort jobs
   const filteredAndSortedJobs = jobs
     .filter((job) => {
-      const matchesSearch = 
+      const matchesSearch =
         job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.details.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesStatus = statusFilter === "all" || job.status === statusFilter;
-      
+
+      const matchesStatus =
+        statusFilter === "all" || job.status === statusFilter;
+
       return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
       let aValue: any = a[sortBy as keyof Job];
       let bValue: any = b[sortBy as keyof Job];
-      
+
       if (sortBy === "dateApplied") {
         aValue = new Date(aValue).getTime();
         bValue = new Date(bValue).getTime();
       }
-      
+
       if (sortOrder === "asc") {
         return aValue > bValue ? 1 : -1;
       } else {
@@ -104,12 +123,16 @@ const JobPage = () => {
 
   return (
     <div className="main-content w-full max-w-7xl mx-auto mt-8 mb-16 pb-8 px-4">
-      <h1 className="text-4xl font-bold mb-8 text-center">Job Application Tracker</h1>
-      
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Job Application Tracker
+      </h1>
+
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">{editingJob ? "Edit Job" : "Add Job"}</h2>
-        <JobForm 
-          onSubmit={handleAddOrUpdate} 
+        <h2 className="text-2xl font-bold mb-4">
+          {editingJob ? "Edit Job" : "Add Job"}
+        </h2>
+        <JobForm
+          onSubmit={handleAddOrUpdate}
           initial={editingJob || undefined}
           onCancel={() => setEditingJob(null)}
         />
@@ -127,7 +150,7 @@ const JobPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Status</label>
             <select
@@ -141,7 +164,7 @@ const JobPage = () => {
               <option value="Rejected">Rejected</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Sort By</label>
             <select
@@ -155,7 +178,7 @@ const JobPage = () => {
               <option value="status">Status</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block mb-1 text-sm font-medium">Order</label>
             <select
@@ -170,37 +193,71 @@ const JobPage = () => {
         </div>
       </div>
 
-      <div className="mt-8 overflow-x-auto">
-        <table className="w-full border-collapse border-2 border-gray-400 bg-white shadow-lg">
+      <div className="mt-8 overflow-x-auto -mx-4 px-4">
+        <table className="min-w-full table-fixed border-collapse border border-gray-300 bg-white shadow-lg">
+          <colgroup>
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "25%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+          </colgroup>
           <thead>
             <tr className="bg-gray-50">
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Company</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Role</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Status</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Date applied</th>
-              <th className="border-2 border-gray-400 px-4 py-3 text-left font-semibold">Actions</th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
+                Company
+              </th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
+                Role
+              </th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
+                Status
+              </th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
+                Date applied
+              </th>
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold align-middle whitespace-nowrap">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {filteredAndSortedJobs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="border-2 border-gray-400 px-4 py-8 text-center text-gray-500">
-                  {jobs.length === 0 ? "No jobs found." : "No jobs match your search criteria."}
+                <td
+                  colSpan={5}
+                  className="border border-gray-300 px-4 py-8 text-center text-gray-500"
+                >
+                  {jobs.length === 0
+                    ? "No jobs found. Add a job to get started."
+                    : "No jobs match your search criteria. Try clearing filters or adjusting your search."}
                 </td>
               </tr>
             ) : (
               filteredAndSortedJobs.map((job) => (
                 <tr key={job.id} className="hover:bg-gray-50">
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.company}</td>
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.role}</td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
-                    <span style={{ color: getStatusColor(job.status), fontWeight: "600" }}>
+                  <td className="border border-gray-300 px-4 py-3 align-middle overflow-hidden truncate">
+                    {job.company}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-3 align-middle overflow-hidden truncate">
+                    {job.role}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-3 align-middle">
+                    <span
+                      className="inline-block align-middle"
+                      style={{
+                        color: getStatusColor(job.status),
+                        fontWeight: "600",
+                      }}
+                    >
                       {job.status}
                     </span>
                   </td>
-                  <td className="border-2 border-gray-400 px-4 py-3">{job.dateApplied}</td>
-                  <td className="border-2 border-gray-400 px-4 py-3">
-                    <div className="flex gap-2">
+                  <td className="border border-gray-300 px-4 py-3 align-middle whitespace-nowrap">
+                    {job.dateApplied}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-3 align-middle whitespace-nowrap">
+                    <div className="flex gap-2 items-center">
                       <button
                         onClick={() => setEditingJob(job)}
                         className="btn-green"

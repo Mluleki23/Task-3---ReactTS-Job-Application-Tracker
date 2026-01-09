@@ -22,13 +22,18 @@ export default function JobForm({
   );
   const [details, setDetails] = useState(initial?.details || "");
 
+  // local helpers
+  const isEditing = Boolean(initial && initial.id);
+
   // Update form fields when initial prop changes
   useEffect(() => {
     if (initial) {
       setCompany(initial.company || "");
       setRole(initial.role || "");
       setStatus((initial.status as JobStatus) || "Applied");
-      setDateApplied(initial.dateApplied || new Date().toISOString().slice(0, 10));
+      setDateApplied(
+        initial.dateApplied || new Date().toISOString().slice(0, 10)
+      );
       setDetails(initial.details || "");
     } else {
       setCompany("");
@@ -49,7 +54,7 @@ export default function JobForm({
       dateApplied,
       details,
       createdAt: initial?.createdAt || new Date().toISOString(),
-      id: initial?.id || Date.now(),
+      id: initial?.id || Date.now().toString(),
     });
     // Reset form after adding new job
     if (!initial) {
@@ -62,10 +67,94 @@ export default function JobForm({
   };
 
   return (
+    <form onSubmit={submit} className="space-y-4 max-w-4xl card p-4 sm:p-6">
+      <div className="form-row cols-2">
+        <div>
+          <label className="block text-base font-normal mb-1">
+            Company name
+          </label>
+          <input
+            placeholder="e.g. OpenAI"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-normal mb-1">Role</label>
+          <input
+            placeholder="e.g. Frontend Engineer"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
+      </div>
+
+      <div className="form-row cols-2">
+        <div>
+          <label className="block text-base font-normal mb-1">Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as JobStatus)}
+            className="w-full border border-gray-300 p-2 rounded"
+          >
+            <option>Applied</option>
+            <option>Interviewed</option>
+            <option>Rejected</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-base font-normal mb-1">
+            Date applied
+          </label>
+          <input
+            type="date"
+            value={dateApplied}
+            onChange={(e) => setDateApplied(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded"
+            placeholder="MM/DD/YYYY"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-base font-normal mb-1">
+          Extra details
+        </label>
+        <textarea
+          placeholder="Add notes such as contact person, job link, or next steps"
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
+          rows={3}
+        />
+      </div>
+
+      <div className="form-actions">
+        {initial && onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+          >
+            Cancel
+          </button>
+        )}
+        <button type="submit" className="btn-green btn-lg">
+          {initial ? "Update" : "Save"}
+        </button>
+      </div>
+    </form>
+  );
+
+  return (
     <form onSubmit={submit} className="space-y-4 max-w-4xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-base font-normal mb-1">Company name</label>
+          <label className="block text-base font-normal mb-1">
+            Company name
+          </label>
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
@@ -81,7 +170,7 @@ export default function JobForm({
           />
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-base font-normal mb-1">Status</label>
@@ -96,7 +185,9 @@ export default function JobForm({
           </select>
         </div>
         <div>
-          <label className="block text-base font-normal mb-1">Date applied</label>
+          <label className="block text-base font-normal mb-1">
+            Date applied
+          </label>
           <input
             type="date"
             value={dateApplied}
@@ -106,21 +197,20 @@ export default function JobForm({
           />
         </div>
       </div>
-      
+
       <div>
-        <label className="block text-base font-normal mb-1">Extra details</label>
+        <label className="block text-base font-normal mb-1">
+          Extra details
+        </label>
         <input
           value={details}
           onChange={(e) => setDetails(e.target.value)}
           className="w-full border border-gray-300 p-2 rounded"
         />
       </div>
-      
+
       <div className="flex gap-2">
-        <button
-          type="submit"
-          className="btn-green"
-        >
+        <button type="submit" className="btn-green">
           {initial ? "Update" : "Save"}
         </button>
         {initial && onCancel && (
